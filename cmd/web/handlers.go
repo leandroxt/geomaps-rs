@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/leandroxt/geomaps-rs/internal/app/city"
 )
@@ -21,13 +22,21 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Hello from GeoMaps"))
 }
 
-func (app *application) getMunicipio(w http.ResponseWriter, r *http.Request) {
-	name := r.URL.Query().Get("name")
-	app.infoLog.Println("Buscando município com o nome: ", name)
+func (app *application) GetCity(w http.ResponseWriter, r *http.Request) {
+	cityID, err := strconv.Atoi(r.URL.Query().Get("cityID"))
+	if err != nil {
+		app.errorLog.Println("Erro ao recuperar city ID: ", cityID)
+		json.NewEncoder(w).Encode(&Err{
+			Error: err.Error(),
+		})
+		return
+	}
 
-	gj, err := city.NewServiceImpl(app.db).GetCity(name)
+	app.infoLog.Println("Buscando município com o ID: ", cityID)
+	gj, err := city.NewServiceImpl(app.db).GetCity(cityID)
 
 	if err != nil {
+		app.errorLog.Println("Erro ao buscar município com ID: ", cityID)
 		json.NewEncoder(w).Encode(&Err{
 			Error: err.Error(),
 		})
@@ -39,11 +48,11 @@ func (app *application) getMunicipio(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) SearchCities(w http.ResponseWriter, r *http.Request) {
 	name := r.URL.Query().Get("name")
-	app.infoLog.Println("Buscando municípios com o nome: ", name)
 
 	gj, err := city.NewServiceImpl(app.db).SearchCities(name)
 
 	if err != nil {
+		app.errorLog.Println("Erro ao buscar municípios com o nome: ", name)
 		json.NewEncoder(w).Encode(&Err{
 			Error: err.Error(),
 		})

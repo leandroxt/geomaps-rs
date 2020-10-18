@@ -2,10 +2,11 @@ CREATE DATABASE IF NOT EXISTS geomaps;
 
 CREATE EXTENSION postgis;
 
-create table municipio (
+create table city (
 	id SERIAL primary key not null,
 	name varchar(60) not null,
 	state varchar(2) not null,
+	state_name varchar(60) not null,
 	geojson json not null,
 	geom geometry
 )

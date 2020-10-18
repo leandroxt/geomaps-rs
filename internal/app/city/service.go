@@ -8,7 +8,7 @@ import (
 
 // Service create service interface
 type Service interface {
-	GetCity(name string) (*entities.GeoJSON, error)
+	GetCity(cityID int) (*entities.GeoJSON, error)
 	SearchCities(name string) ([]*entities.GeoJSON, error)
 }
 
@@ -25,8 +25,8 @@ func NewServiceImpl(db *sql.DB) Service {
 }
 
 // GetCity return a city and its geometry by city name
-func (s ServiceImpl) GetCity(name string) (*entities.GeoJSON, error) {
-	gj, err := s.Repo.GetCity(name)
+func (s ServiceImpl) GetCity(cityID int) (*entities.GeoJSON, error) {
+	gj, err := s.Repo.GetCity(cityID)
 	if err != nil {
 		return nil, err
 	}
