@@ -28,10 +28,11 @@ func NewRepoImpl(db *sql.DB) Repo {
 
 // GetCity retrieve geometry in database
 func (r RepoImpl) GetCity(cityID int) (*entities.GeoJSON, error) {
-	stmt := "select id, name, geojson, ST_AsGeoJSON(geom) from municipio where id = $1"
+	stmt := "select id, name || ' - ' || state, geojson, ST_AsGeoJSON(geom), ST_AsText(ST_Centroid(geom))" +
+		" from city where id = $1"
 
 	gj := &entities.GeoJSON{}
-	err := r.db.QueryRow(stmt, cityID).Scan(&gj.ID, &gj.Name, &gj.JSON, &gj.Geom)
+	err := r.db.QueryRow(stmt, cityID).Scan(&gj.ID, &gj.Name, &gj.JSON, &gj.Geom, &gj.CentroID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, errors.New("no_city_found")
@@ -44,7 +45,7 @@ func (r RepoImpl) GetCity(cityID int) (*entities.GeoJSON, error) {
 
 // SearchCities return a list of city based name search
 func (r RepoImpl) SearchCities(name string) ([]*entities.GeoJSON, error) {
-	stmt := "select distinct id, name from municipio where name ILIKE $1 order by 1"
+	stmt := "select distinct id, name || ' - ' || state from city where name ILIKE $1 order by 1"
 	gj := []*entities.GeoJSON{}
 
 	rows, err := r.db.Query(stmt, fmt.Sprintf("%%%s%%", name))
