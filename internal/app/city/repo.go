@@ -45,7 +45,7 @@ func (r RepoImpl) GetCity(cityID int) (*entities.GeoJSON, error) {
 
 // SearchCities return a list of city based name search
 func (r RepoImpl) SearchCities(name string) ([]*entities.GeoJSON, error) {
-	stmt := "select distinct id, name || ' - ' || state from city where name ILIKE $1 order by 1"
+	stmt := "select distinct id, name || ' - ' || state from city where name ILIKE $1 order by 1 limit 15"
 	gj := []*entities.GeoJSON{}
 
 	rows, err := r.db.Query(stmt, fmt.Sprintf("%%%s%%", name))
