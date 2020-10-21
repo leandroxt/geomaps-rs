@@ -8,6 +8,7 @@ func (app *application) routes() *http.ServeMux {
 
 	mux.HandleFunc("/api/municipio", app.GetCity)
 	mux.HandleFunc("/api/municipio/search", app.SearchCities)
+	mux.HandleFunc("/api/geocoder", app.geocoder)
 
 	return mux
 }

@@ -9,4 +9,6 @@ type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
 	db       *sql.DB
+	mapsURL  string
+	mapsKey  string
 }

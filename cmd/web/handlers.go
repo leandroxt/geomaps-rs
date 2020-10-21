@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/leandroxt/geomaps-rs/internal/app/city"
+	"github.com/leandroxt/geomaps-rs/internal/app/geocoder"
 )
 
 // Err error json
@@ -60,4 +61,20 @@ func (app *application) SearchCities(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(gj)
+}
+
+func (app *application) geocoder(w http.ResponseWriter, r *http.Request) {
+	address := r.URL.Query().Get("address")
+
+	app.infoLog.Println("Init geocoder. Address:", address)
+	geocoder, err := geocoder.NewServiceImpl(app.mapsURL, app.mapsKey).Geocoder(address)
+	if err != nil {
+		app.errorLog.Println("Erro ao geocodificar endereço: ", address)
+		json.NewEncoder(w).Encode(&Err{
+			Error: err.Error(),
+		})
+		return
+	}
+
+	json.NewEncoder(w).Encode(geocoder)
 }

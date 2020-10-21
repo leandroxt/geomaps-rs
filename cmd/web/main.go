@@ -13,6 +13,8 @@ import (
 func main() {
 	addr := flag.String("addr", ":8000", "HTTP network address")
 	dsn := flag.String("dsn", "postgres://user:pass@address:port/db?sslmode=disable", "ConnectionString")
+	mapsURL := flag.String("mapsURL", "", "google maps api URL")
+	mapsKey := flag.String("mapsKey", "", "KEY to authenticate in google maps")
 	flag.Parse()
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
@@ -28,6 +30,8 @@ func main() {
 		errorLog: errorLog,
 		infoLog:  infoLog,
 		db:       db,
+		mapsURL:  *mapsURL,
+		mapsKey:  *mapsKey,
 	}
 
 	server := &http.Server{
