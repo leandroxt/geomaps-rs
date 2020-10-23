@@ -31,3 +31,10 @@ type GeocoderResponse struct {
 	Status  string           `json:"status"`
 	Results []GeocoderResult `json:"results"`
 }
+
+// Area is a circle of interest
+type Area struct {
+	Name   string     `json:"name"`
+	Center Coordinate `json:"center"`
+	Radius float64    `json:"radius"`
+}

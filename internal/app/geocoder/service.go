@@ -23,8 +23,8 @@ type ServiceImpl struct {
 	GoogleMapsKey string
 }
 
-// NewServiceImpl return the service implementation
-func NewServiceImpl(mapsURL, googleMapsKey string) Service {
+// NewService return the service implementation
+func NewService(mapsURL, googleMapsKey string) Service {
 	return ServiceImpl{
 		MapsURL:       mapsURL,
 		GoogleMapsKey: googleMapsKey,

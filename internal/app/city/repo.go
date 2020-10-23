@@ -20,7 +20,7 @@ type RepoImpl struct {
 }
 
 // NewRepoImpl creates new repo implementation
-func NewRepoImpl(db *sql.DB) Repo {
+func NewRepo(db *sql.DB) Repo {
 	return RepoImpl{
 		db: db,
 	}

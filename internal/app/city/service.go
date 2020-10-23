@@ -17,10 +17,10 @@ type ServiceImpl struct {
 	Repo Repo
 }
 
-// NewServiceImpl return the service implementation
-func NewServiceImpl(db *sql.DB) Service {
+// NewService return the service implementation
+func NewService(db *sql.DB) Service {
 	return ServiceImpl{
-		Repo: NewRepoImpl(db),
+		Repo: NewRepo(db),
 	}
 }
 
