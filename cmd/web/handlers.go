@@ -106,3 +106,15 @@ func (app *application) saveArea(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 }
+
+func (app *application) getAreas(w http.ResponseWriter, r *http.Request) {
+	areas, err := area.NewService(app.db).GetAreas()
+	if err != nil {
+		json.NewEncoder(w).Encode(&Err{
+			Error: err.Error(),
+		})
+		return
+	}
+
+	json.NewEncoder(w).Encode(areas)
+}

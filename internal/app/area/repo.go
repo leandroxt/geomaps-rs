@@ -9,6 +9,7 @@ import (
 // Repo creates area respository interface
 type Repo interface {
 	SaveArea(area entities.Area) (bool, error)
+	GetAreas() ([]entities.AreaPoint, error)
 }
 
 // RepoImpl create are repository implementation
@@ -35,4 +36,27 @@ func (r RepoImpl) SaveArea(area entities.Area) (bool, error) {
 	}
 
 	return lastInsertID > 0, nil
+}
+
+// GetAreas retrieves interest areas saved
+func (r RepoImpl) GetAreas() ([]entities.AreaPoint, error) {
+	stmt := "SELECT id, name, radius, ST_AsText(ST_Centroid(center)) point from area order by name"
+
+	rows, err := r.db.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	areas := []entities.AreaPoint{}
+	for rows.Next() {
+		a := entities.AreaPoint{}
+		err = rows.Scan(&a.ID, &a.Name, &a.Radius, &a.Point)
+		if err != nil {
+			return nil, err
+		}
+
+		areas = append(areas, a)
+	}
+	return areas, nil
 }

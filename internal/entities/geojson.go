@@ -38,3 +38,11 @@ type Area struct {
 	Center Coordinate `json:"center"`
 	Radius float64    `json:"radius"`
 }
+
+// AreaPoint is a circle of interest with a str point
+type AreaPoint struct {
+	ID     int     `json:"id"`
+	Name   string  `json:"name"`
+	Point  string  `json:"center"`
+	Radius float64 `json:"radius"`
+}

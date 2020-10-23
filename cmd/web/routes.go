@@ -10,6 +10,7 @@ func (app *application) routes() *http.ServeMux {
 	mux.HandleFunc("/api/municipio/search", app.SearchCities)
 	mux.HandleFunc("/api/geocoder", app.geocoder)
 	mux.HandleFunc("/api/area", app.saveArea)
+	mux.HandleFunc("/api/areas", app.getAreas)
 
 	return mux
 }

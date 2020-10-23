@@ -9,6 +9,7 @@ import (
 // Service create service interface
 type Service interface {
 	SaveArea(area entities.Area) (bool, error)
+	GetAreas() ([]entities.AreaPoint, error)
 }
 
 // ServiceImpl create a service implementation
@@ -30,4 +31,13 @@ func (s ServiceImpl) SaveArea(area entities.Area) (bool, error) {
 		return false, err
 	}
 	return i, nil
+}
+
+// GetAreas retrieves saved interes areas
+func (s ServiceImpl) GetAreas() ([]entities.AreaPoint, error) {
+	areas, err := s.Repo.GetAreas()
+	if err != nil {
+		return nil, err
+	}
+	return areas, nil
 }
